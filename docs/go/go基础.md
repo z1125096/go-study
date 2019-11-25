@@ -20,6 +20,16 @@ var oranges int16 = 2
 var compote int = apples + oranges // compile error , invalid operation: apples + oranges (mismatched types int32 and int16)
 var compote = int(apples) + int(oranges) // compote=3
 ```
+apples 和 oranges 不是 int 类型，所以赋值给 int 类型变量会编译报错。
+```go
+i := 123
+j := int32(i)
+i = j // compile error , Cannot use 'j' (type int32) as type int in assignment
+```
+
+变量 i 属于类型 int，在内存中用一个 32 位字长(word)表示。(32 位内存布局方式）
+
+变量 j 由于做了精确的转换，属于 int32 类型。尽管 i 和 j 有着相同的内存布局，但是它们属于不同的类型：赋值操作 i = j 是一种类型错误，必须写成更精确的转换方式：i = int(j)。
 
 ### 2.1.2 浮点数
 - float32
@@ -158,8 +168,7 @@ s = []int(nil) // len(s) == 0, s == nil
 s = []int{}    // len(s) == 0, s != nil
 ```
 
-### 2.2.3 append 函数
-每次扩展数组时直接将长度翻倍从而避免了多次内存分配，也确保了添加单个元素操的平均时间是一个常数时间。
+每次扩展 slice 时直接将长度翻倍从而避免了多次内存分配，也确保了添加单个元素操的平均时间是一个常数时间。
 ```go
 func main() {
     var x, y []int
@@ -182,7 +191,7 @@ func main() {
 9  cap=16   [0 1 2 3 4 5 6 7 8 9]
 ```
 
-### 2.2.4 Map
+### 2.2.3 Map
 Map 的迭代顺序是不确定的，并且不同的哈希函数实现可能导致不同的遍历顺序。
 
 在实践中，遍历的顺序是随机的，每一次遍历的顺序都不相同。
@@ -195,7 +204,7 @@ for name, age := range ages {
 }
 ```
 
-### 2.2.5 结构体
+### 2.2.4 结构体
 一个命名为 S 的结构体类型将不能再包含 S 类型的成员：因为一个聚合的值不能包含它自身。（该限制同样适用于数组。）
 
 但是 S 类型的结构体可以包含 *S 指针类型的成员，这可以让我们创建递归的数据结构，比如链表和树结构等。
@@ -227,5 +236,8 @@ w.Spokes = 20
 - &&
 - ||
 
-# 思维导图
-- [Go 基础思维导图-图片版](/docs/img/go基础/go-start.jpg)
+# 3、思维导图
+
+go 基础的思维导图的原件以及 PDF 在 [go 基础思维导图](/docs/mind/go基础) 下面，有需要的可以下载以便随时查看。
+
+![go 基础](/docs/mind/go基础/go基础.jpg)
